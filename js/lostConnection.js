@@ -1,10 +1,24 @@
 
+// HyperDAQ javascript 'callback' method.
+function xdaqWindowPreLoad()
+{    
+	// Perform some setup operations.
+	doSetup();
+};
+
+function doSetup()
+{
+    // Add an onClick() handler for the scratch pad. When it is
+    // clicked, the AJAX updates are started (if they are stopped).
+    jQuery("#tcds-log-wrapper").click(function() {
+        startUpdate();
+    });
+}
+
 
 // HyperDAQ javascript 'callback' method.
 function xdaqWindowPostLoad()
 {
-    if (isTCDSApplication())
-    {
         // NOTE: At some point we may want to clean up this
         // button-business a bit.
 
@@ -35,7 +49,7 @@ function xdaqWindowPostLoad()
         });
 
         startUpdate();
-    }
+ 
 }
 
 //-----------------------------------------------------------------------------
