@@ -1,10 +1,7 @@
 
 function loadWin(){
 	//alert("vo Load");					
-	//console.log("Window Loaded : Beginning page setup");
-	
-	// make sure the xdaq-nojs tag has been removed
-	
+
 	
 	/*
 	 * Load Order :
