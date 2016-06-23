@@ -1,15 +1,32 @@
-
-function buttonClick(clicked_id) {
 var constUrl = "http://uzhcms1.cern.ch:2022/urn:xdaq-application:lid=85/";
+function buttonClick(clicked_id) {
+
 
 	if(clicked_id != "EnableButton"){
 	jQuery.ajax({
             url : constUrl + clicked_id,
-            timeout : 2000,
+            timeout : 2000
         });
-	//refresh page	
-	//location.reload();
-	document.reload();
+	
+	jQuery.ajax({
+            url : constUrl + "update",
+			dataType : "json",
+            timeout : 2000,
+			success : function(data) {
+			alert(data);
+			
+            }
+        });
+	jQuery.ajax({
+            url : constUrl + "Default",
+            timeout : 2000,
+			success : function(data) {
+			
+				//$('#tb_Status_uptime').html();
+            }
+        });
+		
+	//alert($('#tb_Status_uptime').innerHTML);
 	}
 
     if(clicked_id == "EnableButton"){
@@ -95,4 +112,10 @@ $("#Start").prop("disabled",true);
 $("#Configure").prop("disabled",true);
 $("#Pause").prop("disabled",true);
 
+}
+
+function loopUpdateVariables(input10){	
+alert("zo loopUpdateVariables");	
+
+	$('#tb_Status_uptime').html(input10);    
 }
