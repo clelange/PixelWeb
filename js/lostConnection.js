@@ -3,7 +3,7 @@ var tcds = {};
 tcds.baseUrl = undefined;
 tcds.updateUrl = undefined;
 tcds.updateInterval = 1000;
-tcds.updateFailCount = undefined;
+tcds.updateFailCount = 0;
 tcds.maxUpdateFailCount = 2;
 tcds.data = undefined;
 tcds.grids = {};
@@ -14,7 +14,7 @@ tcds.templateCache = {};
 
 // HyperDAQ javascript 'callback' method.
 function xdaqWindowPreLoad()
-{    
+{
 	// Perform some setup operations.
 	doSetup();
 		// Figure out the update URL.
@@ -23,21 +23,21 @@ function xdaqWindowPreLoad()
 	{
 		tmpUrl = tmpUrl.slice(0, -1);
 	}
-	var updateUrl = tmpUrl;// + "/update";
+	var updateUrl = tmpUrl + "/update";
 	tcds.baseUrl = tmpUrl;
 	tcds.updateUrl = updateUrl;
 };
 
 function doSetup()
 {
-	//alert("in doSetup");			
+	//alert("in doSetup");
 
 	// Insert a <div> that we can use as scratch pad.
     jQuery("<div id=\"tcds-log-wrapper\"></div>").insertBefore("#xdaq-main");
     jQuery("#tcds-log-wrapper").append("<div id=\"tcds-log\"></div>");
     hideLog();
 
-	
+
     // Add an onClick() handler for the scratch pad. When it is
     // clicked, the AJAX updates are started (if they are stopped).
     jQuery("#tcds-log-wrapper").click(function() {
@@ -91,7 +91,7 @@ function xdaqWindowPostLoad()
         });
 
         startUpdate();
- 
+
 }
 
 //-----------------------------------------------------------------------------
@@ -108,21 +108,21 @@ function updateLoop()
 {
     setTimeout(function(){
         var data;
-		
+
         jQuery.ajax({
             url : tcds.updateUrl,
-            //dataType : "json",
+            dataType : "json",
             data : data,
             timeout : 2000,
             success : function(data, textStatus, jqXHR) {
-			//alert("connected: tcds.updateFailCount=" + tcds.updateFailCount);
+				// alert("connected: tcds.updateFailCount=" + tcds.updateFailCount);
                 processAJAXSuccess(data, textStatus, jqXHR);
                 tcds.updateFailCount = 0;
                 updateLoop();
             },
             error : function(jqXHR, textStatus, errorThrown)
             {
-			//alert("Fail: tcds.updateFailCount=" + tcds.updateFailCount);
+				// alert("Fail: tcds.updateFailCount=" + tcds.updateFailCount);
                 tcds.updateFailCount += 1;
                 if (tcds.updateFailCount > tcds.maxUpdateFailCount)
                 {
@@ -156,9 +156,14 @@ function processAJAXSuccess(data, textStatus, jqXHR)
                   "for more information.");
         return;
     }
-//Luan - temp
+	else {
+		$.map(data, function(value, key) {
+		$("#"+key).html(value);
+		});
+	}
+	//Luan - temp
 	return;
-	
+
     //----------
 
     // Process and apply the data to the DOM.
