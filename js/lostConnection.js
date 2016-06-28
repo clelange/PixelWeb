@@ -2,7 +2,7 @@
 var tcds = {};
 tcds.baseUrl = undefined;
 tcds.updateUrl = undefined;
-tcds.updateInterval = 1000;
+tcds.updateInterval = 500;
 tcds.updateFailCount = 0;
 tcds.maxUpdateFailCount = 2;
 tcds.data = undefined;
