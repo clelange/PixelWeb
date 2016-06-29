@@ -15,3 +15,9 @@
     padding: 5px;
     display: inline-block;
 }
+
+#hard-config{
+  position:fixed
+  height:15%;
+  width:100%;
+}  

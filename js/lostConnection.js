@@ -34,7 +34,7 @@ function doSetup()
 
 	// Insert a <div> that we can use as scratch pad.
     jQuery("<div id=\"tcds-log-wrapper\"></div>").insertBefore("#xdaq-main");
-    jQuery("#tcds-log-wrapper").append("<div id=\"tcds-log\"></div>");
+    //jQuery("#tcds-log-wrapper").append("<div id=\"tcds-log\"></div>");
     hideLog();
 
 

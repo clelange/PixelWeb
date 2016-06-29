@@ -17,6 +17,7 @@ function buttonClick(clicked_id) {
 	if(clicked_id == "Initialize"){
 		$("#Resume").prop("disabled",true);
 		$("#Pause").prop("disabled",true);
+		$("#Initialize").prop("disabled",true);
 		
 		
 		$("#Configure").prop("disabled",false);
@@ -25,7 +26,8 @@ function buttonClick(clicked_id) {
 		
 	}
 	if(clicked_id == "Configure"){
-		$("#Configure").prop("disabled",false);
+		$("#Configure").prop("disabled",true);
+		
 		$("#Halt").prop("disabled",false);
 		$("#Start").prop("disabled",false);
 		$("#ColdReset").prop("disabled",false);
@@ -39,10 +41,10 @@ function buttonClick(clicked_id) {
 	}
 	if(clicked_id == "Pause"){
 		$("#Pause").prop("disabled",true);
+		$("#Resume").prop("disabled",true);
 	
-		$("#Resume").prop("disabled",false);
 		$("#TTCResync").prop("disabled",false);
-		$("#TTCHardreset").prop("disabled",false);
+		$("#TTCHardReset").prop("disabled",false);
 		$("#Halt").prop("disabled",false);
 		$("#Stop").prop("disabled",false);
 	}
@@ -61,13 +63,12 @@ function buttonClick(clicked_id) {
 	if(clicked_id == "Halt"){
 		$("#Start").prop("disabled",true);
 		$("#Resume").prop("disabled",true);
-	
+		$("#Stop").prop("disabled",true);
+		$("#Pause").prop("disabled",true);
+		
 		$("#Configure").prop("disabled",false);
 		$("#Halt").prop("disabled",false);
-		$("#ColdReset").prop("disabled",false);
-		$("#Pause").prop("disabled",false);
-		$("#Stop").prop("disabled",false);
-		
+		$("#ColdReset").prop("disabled",false);		
 	}
 	if(clicked_id == "ColdReset"){
 		
@@ -76,10 +77,10 @@ function buttonClick(clicked_id) {
 		$("#Start").prop("disabled",false);
 	}
 	if(clicked_id == "TTCResync"){
-		
+		$("#TTCResync").prop("disabled",true);
 	}
 	if(clicked_id == "TTCHardReset"){
-		
+		$("#TTCHardReset").prop("disabled",true);
 	}
 	if(clicked_id == "RenewHardwareLease"){
 		
@@ -99,6 +100,8 @@ $("#Stop").prop("disabled",true);
 $("#Start").prop("disabled",true);
 $("#Configure").prop("disabled",true);
 $("#Pause").prop("disabled",true);
+$("#TTCResync").prop("disabled",true);
+$("#TTCHardReset").prop("disabled",true);
 
 }
 
