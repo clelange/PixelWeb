@@ -11,6 +11,7 @@ tcds.l1ahistos = undefined;
 tcds.initialised = false;
 tcds.templateCache = {};
 
+var currentState;
 
 // HyperDAQ javascript 'callback' method.
 function xdaqWindowPreLoad()
@@ -106,6 +107,9 @@ function startUpdate()
 
 function updateLoop()
 {
+	if (ExpIsClicked == false){
+		buttonToState(currentState);
+	}
     setTimeout(function(){
         var data;
 
@@ -115,14 +119,14 @@ function updateLoop()
             data : data,
             timeout : 2000,
             success : function(data, textStatus, jqXHR) {
-				// alert("connected: tcds.updateFailCount=" + tcds.updateFailCount);
+				 //alert("connected: tcds.updateFailCount=" + tcds.updateFailCount);
                 processAJAXSuccess(data, textStatus, jqXHR);
                 tcds.updateFailCount = 0;
                 updateLoop();
             },
             error : function(jqXHR, textStatus, errorThrown)
             {
-				// alert("Fail: tcds.updateFailCount=" + tcds.updateFailCount);
+				 //alert("Fail: tcds.updateFailCount=" + tcds.updateFailCount + "\nupdateUrl=" + tcds.updateUrl);
                 tcds.updateFailCount += 1;
                 if (tcds.updateFailCount > tcds.maxUpdateFailCount)
                 {
@@ -142,7 +146,7 @@ function updateLoop()
 function processAJAXSuccess(data, textStatus, jqXHR)
 {
     hideLog();
-
+	var curCount = false;
     // Check if we really received something. In case something went
     // really bad, we will receive an empty string.
     if (data === "")
@@ -158,6 +162,10 @@ function processAJAXSuccess(data, textStatus, jqXHR)
     }
 	else {
 		$.map(data, function(value, key) {
+		if (curCount == false){
+			currentState = value;
+			curCount = true;
+		}
 		$("#"+key).html(value);
 		});
 	}

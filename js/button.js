@@ -1,6 +1,7 @@
 var constUrl = "http://uzhcms1.cern.ch:2022/urn:xdaq-application:lid=85/";
+var ExpIsClicked = false;
 function buttonClick(clicked_id) {
-
+//alert(currentState);
 
 	if(clicked_id != "ExpertActions"){
 	jQuery.ajax({
@@ -11,10 +12,88 @@ function buttonClick(clicked_id) {
 
     if(clicked_id == "ExpertActions"){
 		$(".btn").prop("disabled",false);
-		defaultState();
+		
+		if (ExpIsClicked == false)
+		{
+			ExpIsClicked = true;
+			document.getElementById("ExpertActions").setAttribute("class", "btn btn-danger");
+		}
+		else{
+			ExpIsClicked = false;
+			document.getElementById("ExpertActions").setAttribute("class", "btn btn-success");
+			}
 	}
 	
-	if(clicked_id == "Initialize"){
+	if (ExpIsClicked == false){
+		buttonToState(currentState);
+		if(clicked_id == "Initialize"){
+		}
+		if(clicked_id == "Configure"){
+			//$("#Configure").prop("disabled",true);
+		}
+		if(clicked_id == "Start"){
+
+		}
+		if(clicked_id == "Pause"){
+			
+		}
+		if(clicked_id == "Resume"){
+			$("#Resume").prop("disabled",true);
+		
+			$("#Pause").prop("disabled",false);
+			$("#Stop").prop("disabled",false);
+		}
+		if(clicked_id == "Stop"){
+			$("#Stop").prop("disabled",true);
+			$("#Pause").prop("disabled",true);
+			
+			$("#Start").prop("disabled",false);
+		}
+		if(clicked_id == "Halt"){
+			$("#Start").prop("disabled",true);
+			$("#Resume").prop("disabled",true);
+			$("#Stop").prop("disabled",true);
+			$("#Pause").prop("disabled",true);
+			
+			$("#Configure").prop("disabled",false);
+			$("#Halt").prop("disabled",false);
+			$("#ColdReset").prop("disabled",false);		
+		}
+		if(clicked_id == "ColdReset"){
+			
+		}
+		if(clicked_id == "Reset"){
+			$("#Start").prop("disabled",false);
+		}
+		if(clicked_id == "TTCResync"){
+			$("#TTCResync").prop("disabled",true);
+		}
+		if(clicked_id == "TTCHardReset"){
+			$("#TTCHardReset").prop("disabled",true);
+		}
+		if(clicked_id == "RenewHardwareLease"){
+			
+		}
+		if(clicked_id == "ReadHardwareConfiguration"){
+			
+		}
+		if(clicked_id == "SendL1A"){
+			
+		}
+	}	
+}
+
+function buttonToState(state){	
+	if(state=="Initial"){
+		$("#Resume").prop("disabled",true);
+		$("#Stop").prop("disabled",true);
+		$("#Start").prop("disabled",true);
+		$("#Configure").prop("disabled",true);
+		$("#Pause").prop("disabled",true);
+		$("#TTCResync").prop("disabled",true);
+		$("#TTCHardReset").prop("disabled",true);
+	}
+	if(state=="Halted"){
 		$("#Resume").prop("disabled",true);
 		$("#Pause").prop("disabled",true);
 		$("#Initialize").prop("disabled",true);
@@ -22,24 +101,27 @@ function buttonClick(clicked_id) {
 		
 		$("#Configure").prop("disabled",false);
 		$("#Halt").prop("disabled",false);
-		
-		
 	}
-	if(clicked_id == "Configure"){
-		$("#Configure").prop("disabled",true);
+	if(state=="Configuring" || state=="Configured"){
+		$("#TTCResync").prop("disabled",true);
+		$("#TTCHardReset").prop("disabled",true);
+		$("#Initialize").prop("disabled",true);
+		$("#Pause").prop("disabled",true);
 		
 		$("#Halt").prop("disabled",false);
 		$("#Start").prop("disabled",false);
-		$("#ColdReset").prop("disabled",false);
+		$("#ColdReset").prop("disabled",false);		
 	}
-	if(clicked_id == "Start"){
+	
+	if(state=="Running"){
 		$("#Start").prop("disabled",true);
+		$("#Initialize").prop("disabled",true);
+		$("#Resume").prop("disabled",true);
 		
 		$("#Pause").prop("disabled",false);
 		$("#Stop").prop("disabled",false);
-		
 	}
-	if(clicked_id == "Pause"){
+	if(state=="Paused"){
 		$("#Pause").prop("disabled",true);
 		$("#Resume").prop("disabled",true);
 	
@@ -48,65 +130,5 @@ function buttonClick(clicked_id) {
 		$("#Halt").prop("disabled",false);
 		$("#Stop").prop("disabled",false);
 	}
-	if(clicked_id == "Resume"){
-		$("#Resume").prop("disabled",true);
-	
-		$("#Pause").prop("disabled",false);
-		$("#Stop").prop("disabled",false);
-	}
-	if(clicked_id == "Stop"){
-		$("#Stop").prop("disabled",true);
-		$("#Pause").prop("disabled",true);
-		
-		$("#Start").prop("disabled",false);
-	}
-	if(clicked_id == "Halt"){
-		$("#Start").prop("disabled",true);
-		$("#Resume").prop("disabled",true);
-		$("#Stop").prop("disabled",true);
-		$("#Pause").prop("disabled",true);
-		
-		$("#Configure").prop("disabled",false);
-		$("#Halt").prop("disabled",false);
-		$("#ColdReset").prop("disabled",false);		
-	}
-	if(clicked_id == "ColdReset"){
-		
-	}
-	if(clicked_id == "Reset"){
-		$("#Start").prop("disabled",false);
-	}
-	if(clicked_id == "TTCResync"){
-		$("#TTCResync").prop("disabled",true);
-	}
-	if(clicked_id == "TTCHardReset"){
-		$("#TTCHardReset").prop("disabled",true);
-	}
-	if(clicked_id == "RenewHardwareLease"){
-		
-	}
-	if(clicked_id == "ReadHardwareConfiguration"){
-		
-	}
-	if(clicked_id == "SendL1A"){
-		
-	}
-	
 }
 
-function defaultState(){
-$("#Resume").prop("disabled",true);
-$("#Stop").prop("disabled",true);
-$("#Start").prop("disabled",true);
-$("#Configure").prop("disabled",true);
-$("#Pause").prop("disabled",true);
-$("#TTCResync").prop("disabled",true);
-$("#TTCHardReset").prop("disabled",true);
-
-}
-
-function loopUpdateVariables(input10){	
-alert("zo loopUpdateVariables");	
-
-	$('#tb_Status_uptime').html(input10);    
-}
