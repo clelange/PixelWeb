@@ -88,6 +88,8 @@ function buttonToState(state){
 		$("#TTCHardReset").prop("disabled",true);
 		$("#Initialize").prop("disabled",true);
 		$("#Pause").prop("disabled",true);
+		$("#Stop").prop("disabled",true);
+		$("#Resume").prop("disabled",true);
 		
 		$("#Configure").prop("disabled",false);
 		$("#Halt").prop("disabled",false);
@@ -99,6 +101,7 @@ function buttonToState(state){
 		$("#Start").prop("disabled",true);
 		$("#Initialize").prop("disabled",true);
 		$("#Resume").prop("disabled",true);
+		$("#Configure").prop("disabled",true);
 		
 		$("#Pause").prop("disabled",false);
 		$("#Stop").prop("disabled",false);
@@ -106,6 +109,9 @@ function buttonToState(state){
 	if(state=="Paused"){
 		$("#Pause").prop("disabled",true);
 		$("#Halt").prop("disabled",true);
+		$("#Start").prop("disabled",true);
+		$("#Configure").prop("disabled",true);
+		$("#Initialize").prop("disabled",true);
 		
 		$("#Resume").prop("disabled",false);
 		$("#TTCResync").prop("disabled",false);
