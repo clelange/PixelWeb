@@ -26,17 +26,7 @@ function buttonClick(clicked_id) {
 	
 	if (ExpIsClicked == false){
 		buttonToState(currentState);
-		if(clicked_id == "Initialize"){
-		}
-		if(clicked_id == "Configure"){
-			//$("#Configure").prop("disabled",true);
-		}
-		if(clicked_id == "Start"){
 
-		}
-		if(clicked_id == "Pause"){
-			
-		}
 		if(clicked_id == "Resume"){
 			$("#Resume").prop("disabled",true);
 		
@@ -48,19 +38,6 @@ function buttonClick(clicked_id) {
 			$("#Pause").prop("disabled",true);
 			
 			$("#Start").prop("disabled",false);
-		}
-		if(clicked_id == "Halt"){
-			$("#Start").prop("disabled",true);
-			$("#Resume").prop("disabled",true);
-			$("#Stop").prop("disabled",true);
-			$("#Pause").prop("disabled",true);
-			
-			$("#Configure").prop("disabled",false);
-			$("#Halt").prop("disabled",false);
-			$("#ColdReset").prop("disabled",false);		
-		}
-		if(clicked_id == "ColdReset"){
-			
 		}
 		if(clicked_id == "Reset"){
 			$("#Start").prop("disabled",false);
@@ -100,8 +77,8 @@ function buttonToState(state){
 		$("#Resume").prop("disabled",true);
 		$("#Pause").prop("disabled",true);
 		$("#Initialize").prop("disabled",true);
-		$("#Halt").prop("disabled",true);
 		$("#Start").prop("disabled",true);
+		$("#Stop").prop("disabled",true);
 		
 		$("#Configure").prop("disabled",false);
 		$("#ColdReset").prop("disabled",false);

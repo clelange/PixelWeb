@@ -35,7 +35,7 @@ function doSetup()
 
 	// Insert a <div> that we can use as scratch pad.
     jQuery("<div id=\"tcds-log-wrapper\"></div>").insertBefore("#xdaq-main");
-    //jQuery("#tcds-log-wrapper").append("<div id=\"tcds-log\"></div>");
+    jQuery("#tcds-log-wrapper").append("<div id=\"tcds-log\"></div>");
     hideLog();
 
 
@@ -308,6 +308,7 @@ function processAJAXError(jqXHR, textStatus, errorThrown)
 
 function showError(htmlText)
 {
+	//alert(htmlText);
     jQuery("#tcds-log").html(htmlText);
     showLog();
     // Mark the page title with a warning.
