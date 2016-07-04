@@ -84,6 +84,9 @@ function buttonClick(clicked_id) {
 }
 
 function buttonToState(state){	
+	$("#ColdReset").prop("disabled",true);
+	
+	
 	if(state=="Initial"){
 		$("#Resume").prop("disabled",true);
 		$("#Stop").prop("disabled",true);
@@ -97,10 +100,11 @@ function buttonToState(state){
 		$("#Resume").prop("disabled",true);
 		$("#Pause").prop("disabled",true);
 		$("#Initialize").prop("disabled",true);
-		
+		$("#Halt").prop("disabled",true);
+		$("#Start").prop("disabled",true);
 		
 		$("#Configure").prop("disabled",false);
-		$("#Halt").prop("disabled",false);
+		$("#ColdReset").prop("disabled",false);
 	}
 	if(state=="Configuring" || state=="Configured"){
 		$("#TTCResync").prop("disabled",true);
@@ -108,6 +112,7 @@ function buttonToState(state){
 		$("#Initialize").prop("disabled",true);
 		$("#Pause").prop("disabled",true);
 		
+		$("#Configure").prop("disabled",false);
 		$("#Halt").prop("disabled",false);
 		$("#Start").prop("disabled",false);
 		$("#ColdReset").prop("disabled",false);		
@@ -123,11 +128,11 @@ function buttonToState(state){
 	}
 	if(state=="Paused"){
 		$("#Pause").prop("disabled",true);
-		$("#Resume").prop("disabled",true);
-	
+		$("#Halt").prop("disabled",true);
+		
+		$("#Resume").prop("disabled",false);
 		$("#TTCResync").prop("disabled",false);
 		$("#TTCHardReset").prop("disabled",false);
-		$("#Halt").prop("disabled",false);
 		$("#Stop").prop("disabled",false);
 	}
 }

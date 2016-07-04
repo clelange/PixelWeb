@@ -252,7 +252,7 @@ function processAJAXError(jqXHR, textStatus, errorThrown)
 {
     var reasonString = "";
     var baseString = "";
-
+	
     // Let's at least catch the usual problems. If nothing known
     // matches show a blanket fail message.
     if (textStatus == "parsererror")
