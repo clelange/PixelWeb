@@ -20,3 +20,8 @@
   height:15%;
   width:100%;
 }  
+
+#table-hover{
+	width:50%;
+	display: inline-block;
+}
