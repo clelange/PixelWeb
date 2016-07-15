@@ -11,7 +11,7 @@ tcds.l1ahistos = undefined;
 tcds.initialised = false;
 tcds.templateCache = {};
 
-var currentState;
+var currentState, clickError = false;
 
 // HyperDAQ javascript 'callback' method.
 function xdaqWindowPreLoad()
@@ -32,7 +32,7 @@ function xdaqWindowPreLoad()
 function doSetup()
 {
 	//alert("in doSetup");
-
+	
 	// Insert a <div> that we can use as scratch pad.
     jQuery("<div id=\"tcds-log-wrapper\"></div>").insertBefore("#xdaq-main");
     jQuery("#tcds-log-wrapper").append("<div id=\"tcds-log\"></div>");
@@ -42,13 +42,16 @@ function doSetup()
     // Add an onClick() handler for the scratch pad. When it is
     // clicked, the AJAX updates are started (if they are stopped).
     jQuery("#tcds-log-wrapper").click(function() {
-        startUpdate();
+        buttonToState(currentState);
+		startUpdate();
     });
 }
 
 function hideLog()
 {
     jQuery("#tcds-log-wrapper").hide();
+	//alert(currentState);
+	
 }
 
 //-----------------------------------------------------------------------------
@@ -146,6 +149,7 @@ function updateLoop()
 function processAJAXSuccess(data, textStatus, jqXHR)
 {
     hideLog();
+	
 	var curCount = false;
     // Check if we really received something. In case something went
     // really bad, we will receive an empty string.
@@ -165,6 +169,14 @@ function processAJAXSuccess(data, textStatus, jqXHR)
 		if (curCount == false){
 			currentState = value;
 			curCount = true;
+		}
+		if (key == "tb_Hardware_Configuration")
+		{
+			//alert("1 " + value);
+			value = value.replace(/</g,"\n");
+			
+			value = value.replace(/@/g,"'");
+			//alert("2 " + value);
 		}
 		$("#"+key).html(value);
 		});

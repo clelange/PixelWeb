@@ -1,5 +1,61 @@
 var constUrl = "http://uzhcms1.cern.ch:2022/urn:xdaq-application:lid=85/";
 var ExpIsClicked = false;
+
+function expertFunction(clicked_id){
+	var formID, inputID, text;
+	if(clicked_id.search("SendBgo")>0)
+	{
+		text = $('#formSendBgoMethod').find('select[name="CommandUInt"]').val();	
+		inputID = "CommandUInt";
+	}
+	if(clicked_id.search("SendBgoTrain")>0)
+	{
+		text = $('#formSendBgoTrain').find('select[name="TrainString"]').val();	
+		inputID = "TrainString";
+	}
+	if(clicked_id.search("SendBgoString")>0)
+	{
+		text = $('#formSendBgoString').find('select[name="CommandString"]').val();	
+		inputID = "CommandString";
+	}
+	if(clicked_id.search("EnableRandomTriggers")>0)
+	{
+		text = $('#formEnableRandomTriggers').find('select[name="FrequencyUInt"]').val();	
+		inputID = "FrequencyUInt";
+	}
+	if(clicked_id.search("UpdateHardwareConfigurationFile")>0)
+	{
+		text = $('#formUpdateHardwareConfigurationFile').find('input[name="FileNameString"]').val();	
+		inputID = "FileNameString";
+	}
+	
+	clicked_id = clicked_id + "?"+inputID+"=" + text;
+	alert('Command sent successfully!');
+	
+	jQuery.ajax({
+            url : clicked_id,
+            timeout : 2000
+        });
+	 
+}
+
+function updateHardwareConfigurationFileMethodUpload(clicked_id){
+	
+	//var text = $('#formUpdateHardwareConfigurationUpload').find('input[name="ConfigurationString"]').val();	
+	//alert(text);
+	//text = text.replace(new RegExp("\\", 'g'), "\%2F");
+	//clicked_id = clicked_id + "?FileNameString=" + text;
+	//alert(clicked_id);
+	jQuery.ajax({
+            url : clicked_id,
+            timeout : 2000
+        });
+	
+}
+
+
+
+
 function buttonClick(clicked_id) {
 //alert(currentState);
 
@@ -72,6 +128,10 @@ function buttonToState(state){
 		$("#Pause").prop("disabled",true);
 		$("#TTCResync").prop("disabled",true);
 		$("#TTCHardReset").prop("disabled",true);
+		$("#Halt").prop("disabled",true);
+		
+		
+		$("#Initialize").prop("disabled",false);
 	}
 	if(state=="Halted"){
 		$("#Resume").prop("disabled",true);
