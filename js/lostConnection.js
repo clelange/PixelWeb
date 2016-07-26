@@ -2,8 +2,8 @@
 var tcds = {};
 tcds.baseUrl = undefined;
 tcds.updateUrl = undefined;
-tcds.updateInterval = 1000;
-tcds.updateFailCount = undefined;
+tcds.updateInterval = 500;
+tcds.updateFailCount = 0;
 tcds.maxUpdateFailCount = 2;
 tcds.data = undefined;
 tcds.grids = {};
@@ -11,10 +11,11 @@ tcds.l1ahistos = undefined;
 tcds.initialised = false;
 tcds.templateCache = {};
 
+var currentState, clickError = false;
 
 // HyperDAQ javascript 'callback' method.
 function xdaqWindowPreLoad()
-{    
+{
 	// Perform some setup operations.
 	doSetup();
 		// Figure out the update URL.
@@ -23,31 +24,34 @@ function xdaqWindowPreLoad()
 	{
 		tmpUrl = tmpUrl.slice(0, -1);
 	}
-	var updateUrl = tmpUrl;// + "/update";
+	var updateUrl = tmpUrl + "/update";
 	tcds.baseUrl = tmpUrl;
 	tcds.updateUrl = updateUrl;
 };
 
 function doSetup()
 {
-	//alert("in doSetup");			
-
+	//alert("in doSetup");
+	
 	// Insert a <div> that we can use as scratch pad.
     jQuery("<div id=\"tcds-log-wrapper\"></div>").insertBefore("#xdaq-main");
     jQuery("#tcds-log-wrapper").append("<div id=\"tcds-log\"></div>");
     hideLog();
 
-	
+
     // Add an onClick() handler for the scratch pad. When it is
     // clicked, the AJAX updates are started (if they are stopped).
     jQuery("#tcds-log-wrapper").click(function() {
-        startUpdate();
+        buttonToState(currentState);
+		startUpdate();
     });
 }
 
 function hideLog()
 {
     jQuery("#tcds-log-wrapper").hide();
+	//alert(currentState);
+	
 }
 
 //-----------------------------------------------------------------------------
@@ -91,7 +95,7 @@ function xdaqWindowPostLoad()
         });
 
         startUpdate();
- 
+
 }
 
 //-----------------------------------------------------------------------------
@@ -106,23 +110,26 @@ function startUpdate()
 
 function updateLoop()
 {
+	if (ExpIsClicked == false){
+		buttonToState(currentState);
+	}
     setTimeout(function(){
         var data;
-		
+
         jQuery.ajax({
             url : tcds.updateUrl,
-            //dataType : "json",
+            dataType : "json",
             data : data,
             timeout : 2000,
             success : function(data, textStatus, jqXHR) {
-			//alert("connected: tcds.updateFailCount=" + tcds.updateFailCount);
+				 //alert("connected: tcds.updateFailCount=" + tcds.updateFailCount);
                 processAJAXSuccess(data, textStatus, jqXHR);
                 tcds.updateFailCount = 0;
                 updateLoop();
             },
             error : function(jqXHR, textStatus, errorThrown)
             {
-			//alert("Fail: tcds.updateFailCount=" + tcds.updateFailCount);
+				 //alert("Fail: tcds.updateFailCount=" + tcds.updateFailCount + "\nupdateUrl=" + tcds.updateUrl);
                 tcds.updateFailCount += 1;
                 if (tcds.updateFailCount > tcds.maxUpdateFailCount)
                 {
@@ -142,7 +149,8 @@ function updateLoop()
 function processAJAXSuccess(data, textStatus, jqXHR)
 {
     hideLog();
-
+	
+	var curCount = false;
     // Check if we really received something. In case something went
     // really bad, we will receive an empty string.
     if (data === "")
@@ -156,9 +164,26 @@ function processAJAXSuccess(data, textStatus, jqXHR)
                   "for more information.");
         return;
     }
-//Luan - temp
+	else {
+		$.map(data, function(value, key) {
+		if (curCount == false){
+			currentState = value;
+			curCount = true;
+		}
+		if (key == "tb_Hardware_Configuration")
+		{
+			//alert("1 " + value);
+			value = value.replace(/</g,"\n");
+			
+			value = value.replace(/@/g,"'");
+			//alert("2 " + value);
+		}
+		$("#"+key).html(value);
+		});
+	}
+	//Luan - temp
 	return;
-	
+
     //----------
 
     // Process and apply the data to the DOM.
@@ -239,7 +264,7 @@ function processAJAXError(jqXHR, textStatus, errorThrown)
 {
     var reasonString = "";
     var baseString = "";
-
+	
     // Let's at least catch the usual problems. If nothing known
     // matches show a blanket fail message.
     if (textStatus == "parsererror")
@@ -295,6 +320,7 @@ function processAJAXError(jqXHR, textStatus, errorThrown)
 
 function showError(htmlText)
 {
+	//alert(htmlText);
     jQuery("#tcds-log").html(htmlText);
     showLog();
     // Mark the page title with a warning.
